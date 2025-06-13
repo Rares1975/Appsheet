@@ -12,3 +12,16 @@ LINKTOVIEW("Descargar pdf")&"&at="&(NOW()+1)
 
 Behavior - Action Descarfar PDF:
 CONTEXT(VIEW)="DASHABOARD"
+
+Template PDF
+
+<<START:SELECT(FiltroCompras[id_compras],TRUE)>><<[fecha]>>
+
+<<[Descripcion]>>
+<<[producto].[descripcion]>>
+<<[categoria].[nombre]>>
+
+<<[cantidad]>>
+<<[valor unitario]>><<end>>
+
+
