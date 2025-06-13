@@ -1,0 +1,3 @@
+LINKTOVIEW("Descargar pdf")&"&at="&(NOW()+1)
+
+CONTEXT(VIEW)="DASHABOARD"
