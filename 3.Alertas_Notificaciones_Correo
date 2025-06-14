@@ -1,0 +1,48 @@
+MenuNameVirtual 
+
+SWITCH
+(
+  [vistamenu]
+  ,"Compras", CONCATENATE([vistamenu], " [ ", [ComprasCantidad], " ] ")
+  ,"Productos", CONCATENATE([vistamenu], " [ ", [CantidadProductos], " ] ")
+  ,[vistamenu]
+)
+
+ComprasCantidad
+
+COUNT(SELECT(Compras[id_compras], TRUE))
+
+
+CantidadProductos
+
+COUNT(
+  FILTER(
+    "Productos",
+    [Cantidad] <= 0
+  )
+)
+
+Template Correo 
+
+Descripcion
+Precio
+Proveedor
+Telefono
+<<[id_productos].[descripcion]>>
+<<[precio]>>
+<<[proveedor].[nombre]>>
+<<[proveedor].[telefono]>>
+
+
+Ultimas Compras
+id_compras
+Descripcion
+producto
+Fecha
+proveedor
+<<Start: [Related Compras]>><<[id_compras]>>
+<<[Descripcion]>>
+<<[producto]>>
+<<[fecha]>>
+<<[proveedor].[nombre]>><<End>>
+
