@@ -1,1 +1,51 @@
+Silde, UltimaVenta
+
+[id_ventas]=INDEX(Ventas[Id_ventas],COUNT(Ventas[Id_ventas]))
+
+Crear las action AgregarProductoVenta
+
+INDEX(Ventas[Id_ventas],COUNT(Ventas[Id_ventas]))	
+[_thisrow].[id_productos]
+
+Behavior
+
+ISBLANK(
+  ANY(
+    SELECT(
+      Detalle[Producto],
+      AND(
+        [id_venta] = INDEX(Ventas[Id_ventas], COUNT(Ventas[Id_ventas])),
+        [Producto] = [_THISROW].[id_productos]
+      )
+    )
+  )
+)
+
+Action ActualizarSiExiste
+
+Reference Table
+
+SELECT(
+  Detalle[id_detalle],
+  AND(
+    [id_venta] = INDEX(Ventas[id_ventas], COUNT(Ventas[id_ventas])),
+    [Producto] = [_THISROW].[id_productos]
+  )
+)
+
+Columna Virtual CantidadActual
+
+[cantidad] - SUM(
+  SELECT(
+    Detalle[Cantidad],
+    [Producto] = [_THISROW].[id_productos]
+  )
+)
+
+Validar si hay existencia EN LA ACTION SUMAR CANTIDAD EN BEAHIVOR
+(
+  ANY(SELECT(Productos[CantidadActual], [id_productos] = [Producto])) 
+  >= 
+  [Cantidad] + 1
+)
 
