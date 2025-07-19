@@ -1,0 +1,71 @@
+Poner método de pago en la acción AgregarProducto
+
+LOOKUP(
+ INDEX(Ventas[Id_ventas], COUNT(Ventas[Id_ventas])),
+  "Ventas",
+  "Id_ventas",
+  "metodo de pago"
+)
+
+Tabla virtual FiltroVentas
+
+SELECT(
+  Ventas[Id_ventas],
+  AND(
+    DATE([fecha]) >= DATE([_THISROW].[Fecha Inicio]),
+    DATE([fecha]) <= DATE([_THISROW].[Fecha Fin]),
+    [metodo de pago] = [_THISROW].[metodo de pago],
+    SUM(
+      SELECT(
+        Detalle[Total],
+        [id_venta] = [Id_ventas]
+      )
+    ) > 0
+  )
+)
+
+Tabla virtual TotalSuma 
+
+"SUMA TOTAL VENTAS" & 
+IF(ISNOTBLANK([metodo de pago]), 
+  " (" & [metodo de pago] & "): ", 
+  ": "
+) & "$" & 
+(
+  SUM(
+    SELECT(
+      Detalle[Total],
+      IN(
+        [id_venta],
+        SELECT(
+          Ventas[Id_ventas],
+          AND(
+            DATE([fecha]) >= DATE([_THISROW].[Fecha Inicio]),
+            DATE([fecha]) <= DATE([_THISROW].[Fecha Fin]),
+            OR(
+              ISBLANK([_THISROW].[metodo de pago]),
+              [metodo de pago] = [_THISROW].[metodo de pago]
+            )
+          )
+        )
+      )
+    )
+  ) & "")
+
+ExportarVentas – CREAR LAS CARPETAS Exportar y Ventas
+
+
+"/appsheet/data/AppInventario-112066160-25-05-16/Exportar/Ventas/Reporte de ventas - " & [Export] & ".xlsx"
+
+AccionVentasReporte.     TEXT(NOW(), "yyyymmdd HHMMSS")
+
+bot
+Condition 
+
+[_THISROW_BEFORE].[Export] <> [_THISROW_AFTER].[Export]
+
+File Name prefix
+"Reporte de ventas - " & [Export]
+
+
+
