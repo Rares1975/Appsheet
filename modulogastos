@@ -1,0 +1,100 @@
+Sgv_ventas
+
+"data:image/svg+xml;utf8," &
+ENCODEURL(
+  CONCATENATE(
+    "<svg xmlns='http://www.w3.org/2000/svg' width='700' height='400' viewBox='0 0 400 400'>",
+      "<rect x='20' y='20' width='360' height='360' rx='30' fill='#3b82f6' />",
+      
+      "<g transform='translate(145, 50)'>",
+        "<circle cx='55' cy='55' r='45' fill='#facc15' stroke='black' stroke-width='3'/>",
+        "<text x='42' y='65' font-family='Arial' font-size='30' fill='black' font-weight='bold'>💰</text>",
+      "</g>",
+
+      "<text x='130' y='190' font-family='Arial' font-size='34' fill='white'>VENTAS</text>",
+      "<text x='100' y='270' font-family='Arial' font-size='40' fill='white'>", 
+        TEXT([TotalVentas]),
+      "</text>",
+    "</svg>"
+  )
+)
+
+Svg_gastos
+
+"data:image/svg+xml;utf8," &
+ENCODEURL(
+  CONCATENATE(
+    "<svg xmlns='http://www.w3.org/2000/svg' width='700' height='400' viewBox='0 0 400 400'>",
+      "<rect x='20' y='20' width='360' height='360' rx='30' fill='#dc2626' />",
+      
+      "<g transform='translate(145, 50)'>",
+        "<circle cx='55' cy='55' r='45' fill='#facc15' stroke='black' stroke-width='3'/>",
+        "<text x='42' y='65' font-family='Arial' font-size='30' fill='black' font-weight='bold'>💸</text>",
+      "</g>",
+
+      "<text x='130' y='190' font-family='Arial' font-size='34' fill='white'>GASTOS</text>",
+      "<text x='100' y='270' font-family='Arial' font-size='40' fill='white'>", 
+        TEXT(
+          SUM(
+            SELECT(Gastos[Valor], 
+              AND([Fecha] >= [_THISROW].[FechaInicio], [Fecha] <= [_THISROW].[FechaFin])
+            )
+          )
+        ),
+      "</text>",
+    "</svg>"
+  )
+)
+
+Svg_final
+
+"data:image/svg+xml;utf8," &
+ENCODEURL(
+  IF(
+    [TotalVentas] - SUM(
+      SELECT(Gastos[Valor], 
+        AND([Fecha] >= [_THISROW].[FechaInicio], [Fecha] <= [_THISROW].[FechaFin])
+      )
+    ) < 0,
+
+    CONCATENATE(
+      "<svg xmlns='http://www.w3.org/2000/svg' width='700' height='400' viewBox='0 0 400 400'>",
+        "<rect x='20' y='20' width='360' height='360' rx='30' fill='#dc2626' />",
+        "<g transform='translate(145, 50)'>",
+          "<circle cx='55' cy='55' r='45' fill='#facc15' stroke='black' stroke-width='3'/>",
+          "<text x='42' y='65' font-family='Arial' font-size='30' fill='black' font-weight='bold'>🧮</text>",
+        "</g>",
+        "<text x='130' y='190' font-family='Arial' font-size='34' fill='white'>Total Dinero</text>",
+        "<text x='100' y='270' font-family='Arial' font-size='40' fill='white'>", 
+          TEXT(
+            [TotalVentas] - SUM(
+              SELECT(Gastos[Valor], 
+                AND([Fecha] >= [_THISROW].[FechaInicio], [Fecha] <= [_THISROW].[FechaFin])
+              )
+            )
+          ),
+        "</text>",
+      "</svg>"
+    ),
+
+    CONCATENATE(
+      "<svg xmlns='http://www.w3.org/2000/svg' width='700' height='400' viewBox='0 0 400 400'>",
+        "<rect x='20' y='20' width='360' height='360' rx='30' fill='#16a34a' />",
+        "<g transform='translate(145, 50)'>",
+          "<circle cx='55' cy='55' r='45' fill='#facc15' stroke='black' stroke-width='3'/>",
+          "<text x='42' y='65' font-family='Arial' font-size='30' fill='black' font-weight='bold'>🧮</text>",
+        "</g>",
+        "<text x='130' y='190' font-family='Arial' font-size='34' fill='white'>Total Dinero</text>",
+        "<text x='100' y='270' font-family='Arial' font-size='40' fill='white'>", 
+          TEXT(
+            [TotalVentas] - SUM(
+              SELECT(Gastos[Valor], 
+                AND([Fecha] >= [_THISROW].[FechaInicio], [Fecha] <= [_THISROW].[FechaFin])
+              )
+            )
+          ),
+        "</text>",
+      "</svg>"
+    )
+  )
+)
