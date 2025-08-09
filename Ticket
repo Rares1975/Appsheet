@@ -1,0 +1,13 @@
+CREAR EL BOT
+CONDICION [_THISROW_BEFORE].[Incremento]<>[_THISROW_AFTER].[Incremento]
+
+FILE FOLDER PATCH
+
+“/Tickets”
+
+FILE NAME PREFIX
+
+concatenate("Ticket", [Id_ventas])
+
+Action Crear Ticket
+concatenate("/Tickets/Ticket",[Id_ventas],".pdf")
