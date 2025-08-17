@@ -1,0 +1,67 @@
+Crear el appscript
+
+function enviarCorreo(correoDestinatario, asunto, cuerpoCorreo) {
+  // Enviar el correo electrónico
+  MailApp.sendEmail({
+    to: correoDestinatario,
+    subject: asunto,
+    htmlBody: cuerpoCorreo
+  });
+
+  // Mostrar cuota diaria 
+  Logger.log(MailApp.getRemainingDailyQuota())
+}
+
+
+Html Cuerpo del correo
+
+"
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Alerta de Inventario</title>
+</head>
+<body style='margin:0; padding:0; background:#f4f4f9;'>
+  <center style='width:100%; background:#f4f4f9;'>
+    <table role='presentation' cellpadding='0' cellspacing='0' border='0' width='100%' style='max-width:600px; margin:20px auto; background:#ffffff; border-radius:8px; overflow:hidden;'>
+      <!-- Header -->
+      <tr>
+        <td align='center' style='background:#4CAF50; color:#ffffff; padding:20px;'>
+          <h1 style='margin:0; font-family:Arial,sans-serif; font-size:22px;'>Alerta de Inventario</h1>
+        </td>
+      </tr>
+      <!-- Título -->
+      <tr>
+        <td align='center' style='padding:24px 20px 8px 20px;'>
+          <h2 style='margin:0; font-family:Arial,sans-serif; font-size:18px; color:#222;'>¡Producto en baja existencia!</h2>
+        </td>
+      </tr>
+      <!-- Contenido -->
+      <tr>
+        <td style='padding:8px 24px 24px 24px; font-family:Arial,sans-serif; color:#333; font-size:14px; line-height:1.6;'>
+          <p style='margin:0 0 14px 0;'>Se ha detectado un artículo con inventario bajo. A continuación, los detalles:</p>
+          <table role='presentation' cellpadding='0' cellspacing='0' border='0' width='100%' style='border-collapse:collapse; background:#fafafa; border:1px solid #eee; border-radius:6px;'>
+            <tr>
+              <td style='padding:12px 14px; width:35%; font-weight:bold; border-bottom:1px solid #eee;'>Descripción</td>
+              <td style='padding:12px 14px; border-bottom:1px solid #eee;'>" & [descripcion] & "</td>
+            </tr>
+            <tr>
+              <td style='padding:12px 14px; width:35%; font-weight:bold;'>Cantidad</td>
+              <td style='padding:12px 14px;'>" & [cantidad] & "</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <!-- Footer -->
+      <tr>
+        <td align='center' style='background:#f1f1f1; color:#777; padding:12px; font-size:12px;'>
+          Este mensaje fue generado automáticamente. No responda a este correo.
+        </td>
+      </tr>
+    </table>
+  </center>
+</body>
+</html>
+"
